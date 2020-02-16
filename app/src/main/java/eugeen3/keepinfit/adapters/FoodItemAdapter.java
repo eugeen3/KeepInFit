@@ -1,11 +1,13 @@
 package eugeen3.keepinfit.adapters;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -16,12 +18,13 @@ import eugeen3.keepinfit.entities.FoodItem;
 
 import static java.lang.String.valueOf;
 
-public class FoodItemAdapter extends RecyclerView.Adapter<FoodItemAdapter.ViewHolder> {
-
+public class FoodItemAdapter extends RecyclerView.Adapter<FoodItemAdapter.ViewHolder> implements Filterable {
     private List<FoodItem> foodItems;
+    private List<FoodItem> foodItemsFull;
     private final static String PORTION_WEIGHT = "в 100 гр:";
 
     @Override
+    @NonNull
     public FoodItemAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.food_item, parent, false);
@@ -49,6 +52,11 @@ public class FoodItemAdapter extends RecyclerView.Adapter<FoodItemAdapter.ViewHo
         notifyDataSetChanged();
     }
 
+    public void setFoodItemsFull(List<FoodItem> foodItems) {
+        this.foodItemsFull = new ArrayList<>(foodItems);
+        notifyDataSetChanged();
+    }
+
     public FoodItem getFoodItemAt(int position) {
         return  foodItems.get(position);
     }
@@ -65,4 +73,40 @@ public class FoodItemAdapter extends RecyclerView.Adapter<FoodItemAdapter.ViewHo
             kcalsView = view.findViewById(R.id.foodKcalValue);
         }
     }
+
+    @Override
+    public Filter getFilter() {
+        return filter;
+    }
+
+    private Filter filter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            List <FoodItem> filteredList = new ArrayList<>();
+
+            if (constraint == null || constraint.length() == 0) {
+                filteredList.addAll(foodItemsFull);
+            } else {
+                String filterPattern = constraint.toString().toLowerCase().trim();
+
+                for (FoodItem foodItem: foodItemsFull) {
+                    if (foodItem.getName().toLowerCase().contains(filterPattern)) {
+                        filteredList.add(foodItem);
+                    }
+                }
+            }
+
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            foodItems.clear();
+            foodItems.addAll((List) results.values);
+            notifyDataSetChanged();
+        }
+    };
 }
