@@ -14,7 +14,7 @@ public class FoodItem {
     private float fats;
     private int kcals;
 
-    public FoodItem(String name, float proteins, float carbohydrates, float fats, int kcals) {
+    public FoodItem(String name, float proteins, float fats, float carbohydrates, int kcals) {
         this.name = name;
         this.proteins = proteins;
         this.carbohydrates = carbohydrates;

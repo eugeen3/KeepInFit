@@ -26,6 +26,6 @@ public interface FoodItemDAO {
     @Query("DELETE FROM foodItems_table")
     void deleteAll();
 
-    @Query("SELECT * FROM foodItems_table ORDER BY name DESC")
+    @Query("SELECT * FROM foodItems_table ORDER BY name ASC")
     LiveData<List<FoodItem>> getAllFoodItems();
 }

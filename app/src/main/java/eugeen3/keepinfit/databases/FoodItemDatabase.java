@@ -51,6 +51,7 @@ public abstract class FoodItemDatabase extends RoomDatabase {
             foodItemDAO.insert(new FoodItem("Яйцо", 12.7f, 0.7f, 11.5f, 157));
             foodItemDAO.insert(new FoodItem("Банан", 1.5f, 21f, 0.5f, 96));
             foodItemDAO.insert(new FoodItem("Яблоко", 0.4f, 9.8f, 0.4f, 47));
+            foodItemDAO.insert(new FoodItem("Говядина", 22.9f, 32.7f, 0f, 393));
             return null;
         }
     }

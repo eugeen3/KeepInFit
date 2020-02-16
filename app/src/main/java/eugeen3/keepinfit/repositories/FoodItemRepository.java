@@ -2,7 +2,6 @@ package eugeen3.keepinfit.repositories;
 
 import android.app.Application;
 import android.os.AsyncTask;
-import android.provider.ContactsContract;
 
 import androidx.lifecycle.LiveData;
 
