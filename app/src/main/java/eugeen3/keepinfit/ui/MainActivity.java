@@ -25,13 +25,15 @@ import java.util.List;
 import eugeen3.keepinfit.R;
 import eugeen3.keepinfit.adapters.FoodItemAdapter;
 import eugeen3.keepinfit.entities.FoodItem;
+import eugeen3.keepinfit.itemtouch.SimpleItemTouchHelperCallback;
 import eugeen3.keepinfit.viewmodels.FoodItemViewModel;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MenuItem.OnActionExpandListener{
     public static final int ADD_FOOD_ITEM_REQUEST = 1;
 
     private FoodItemViewModel foodItemViewModel;
     FoodItemAdapter adapter;
+    RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
             startActivityForResult(intent, ADD_FOOD_ITEM_REQUEST);
         });
 
-        RecyclerView recyclerView = findViewById(R.id.rv_food_items);
+        recyclerView = findViewById(R.id.rv_food_items);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
 
@@ -57,25 +59,12 @@ public class MainActivity extends AppCompatActivity {
             adapter.setFoodItemsFull(foodItems);
         });
 
-        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
-                ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
-            @Override
-            public int getMovementFlags(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
-                return 0;
-            }
-
-            @Override
-            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-                return false;
-            }
-
-            @Override
-            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                foodItemViewModel.delete(adapter.getFoodItemAt(viewHolder.getAdapterPosition()));
-                Toast.makeText(MainActivity.this, "Продукт удалён", Toast.LENGTH_SHORT).show();
-            }
-        }).attachToRecyclerView(recyclerView);
+        ItemTouchHelper.Callback callback =
+                new SimpleItemTouchHelperCallback(adapter);
+        ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
+        touchHelper.attachToRecyclerView(recyclerView);
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -136,5 +125,15 @@ public class MainActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public boolean onMenuItemActionExpand(MenuItem item) {
+        return true;
+    }
+
+    @Override
+    public boolean onMenuItemActionCollapse(MenuItem item) {
+        return true;
     }
 }

@@ -25,16 +25,13 @@ public class FoodItemViewModel extends AndroidViewModel {
         repository.insert(foodItem);
     }
 
-
     public void update(FoodItem foodItem) {
         repository.update(foodItem);
     }
 
-
     public void delete(FoodItem foodItem) {
         repository.delete(foodItem);
     }
-
 
     public void deleteAllFoodItems() {
         repository.deleteAllFoodItems();

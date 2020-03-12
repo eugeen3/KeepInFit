@@ -8,17 +8,20 @@ import android.widget.Filterable;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import eugeen3.keepinfit.R;
 import eugeen3.keepinfit.entities.FoodItem;
+import eugeen3.keepinfit.itemtouch.ItemTouchHelperAdapter;
 
 import static java.lang.String.valueOf;
 
-public class FoodItemAdapter extends RecyclerView.Adapter<FoodItemAdapter.ViewHolder> implements Filterable {
+public class FoodItemAdapter extends RecyclerView.Adapter<FoodItemAdapter.ViewHolder> implements Filterable, ItemTouchHelperAdapter {
     private List<FoodItem> foodItems;
     private List<FoodItem> foodItemsFull;
     private final static String PORTION_WEIGHT = "в 100 гр:";
@@ -109,4 +112,25 @@ public class FoodItemAdapter extends RecyclerView.Adapter<FoodItemAdapter.ViewHo
             notifyDataSetChanged();
         }
     };
+
+    @Override
+    public void onItemDismiss(int position) {
+        foodItems.remove(position);
+        notifyItemRemoved(position);
+    }
+
+    @Override
+    public boolean onItemMove(int fromPosition, int toPosition) {
+        if (fromPosition < toPosition) {
+            for (int i = fromPosition; i < toPosition; i++) {
+                Collections.swap(foodItems, i, i + 1);
+            }
+        } else {
+            for (int i = fromPosition; i > toPosition; i--) {
+                Collections.swap(foodItems, i, i - 1);
+            }
+        }
+        notifyItemMoved(fromPosition, toPosition);
+        return true;
+    }
 }
