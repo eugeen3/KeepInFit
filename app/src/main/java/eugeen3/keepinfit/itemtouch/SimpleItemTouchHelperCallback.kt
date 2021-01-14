@@ -1,46 +1,30 @@
-package eugeen3.keepinfit.itemtouch;
+package eugeen3.keepinfit.itemtouch
 
-import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
 
-import static androidx.recyclerview.widget.ItemTouchHelper.Callback.makeMovementFlags;
-
-public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback{
-
-
-    private final ItemTouchHelperAdapter mAdapter;
-
-    public SimpleItemTouchHelperCallback(ItemTouchHelperAdapter adapter) {
-        mAdapter = adapter;
+class SimpleItemTouchHelperCallback(private val mAdapter: ItemTouchHelperAdapter) : ItemTouchHelper.Callback() {
+    override fun isLongPressDragEnabled(): Boolean {
+        return true
     }
 
-    @Override
-    public boolean isLongPressDragEnabled() {
-        return true;
+    override fun isItemViewSwipeEnabled(): Boolean {
+        return true
     }
 
-    @Override
-    public boolean isItemViewSwipeEnabled() {
-        return true;
+    override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
+        val dragFlags = ItemTouchHelper.UP or ItemTouchHelper.DOWN
+        val swipeFlags = ItemTouchHelper.START or ItemTouchHelper.END
+        return makeMovementFlags(dragFlags, swipeFlags)
     }
 
-    @Override
-    public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
-        int dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN;
-        int swipeFlags = ItemTouchHelper.START | ItemTouchHelper.END;
-        return makeMovementFlags(dragFlags, swipeFlags);
+    override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder,
+                        target: RecyclerView.ViewHolder): Boolean {
+        mAdapter.onItemMove(viewHolder.adapterPosition, target.adapterPosition)
+        return true
     }
 
-
-    @Override
-    public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
-                          RecyclerView.ViewHolder target) {
-        mAdapter.onItemMove(viewHolder.getAdapterPosition(), target.getAdapterPosition());
-        return true;
-    }
-
-    @Override
-    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-        mAdapter.onItemDismiss(viewHolder.getAdapterPosition());
+    override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+        mAdapter.onItemDismiss(viewHolder.adapterPosition)
     }
 }

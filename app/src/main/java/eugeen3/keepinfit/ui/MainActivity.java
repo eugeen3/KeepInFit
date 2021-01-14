@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnAction
         foodItemViewModel.getAllFoodItems().observe(this, (List<FoodItem> foodItems) -> {
             adapter.setFoodItems(foodItems);
             adapter.setFoodItemsFull(foodItems);
+            adapter.setFoodItemViewModel(foodItemViewModel);
         });
 
         ItemTouchHelper.Callback callback =

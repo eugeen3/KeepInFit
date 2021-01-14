@@ -1,16 +1,12 @@
-package eugeen3.keepinfit.entities;
+package eugeen3.keepinfit.entities
 
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
-
-import java.util.List;
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
 @Entity
-public class Meal {
+class Meal {
     @PrimaryKey
-    private long id;
-
-    private String name;
-    private List<FoodItem> foodItems;
-
+    private val id: Long = 0
+    private val name: String? = null
+    private val foodItems: List<FoodItem>? = null
 }

@@ -18,12 +18,19 @@ import java.util.List;
 import eugeen3.keepinfit.R;
 import eugeen3.keepinfit.entities.FoodItem;
 import eugeen3.keepinfit.itemtouch.ItemTouchHelperAdapter;
+import eugeen3.keepinfit.viewmodels.FoodItemViewModel;
 
 import static java.lang.String.valueOf;
 
 public class FoodItemAdapter extends RecyclerView.Adapter<FoodItemAdapter.ViewHolder> implements Filterable, ItemTouchHelperAdapter {
     private List<FoodItem> foodItems;
     private List<FoodItem> foodItemsFull;
+
+    public void setFoodItemViewModel(FoodItemViewModel foodItemViewModel) {
+        this.foodItemViewModel = foodItemViewModel;
+    }
+
+    private FoodItemViewModel foodItemViewModel;
     private final static String PORTION_WEIGHT = "в 100 гр:";
 
     @Override
@@ -117,6 +124,7 @@ public class FoodItemAdapter extends RecyclerView.Adapter<FoodItemAdapter.ViewHo
     public void onItemDismiss(int position) {
         foodItems.remove(position);
         notifyItemRemoved(position);
+        foodItemViewModel.delete(foodItems.get(position));
     }
 
     @Override

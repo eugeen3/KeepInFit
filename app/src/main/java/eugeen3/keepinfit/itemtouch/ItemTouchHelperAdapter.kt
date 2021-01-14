@@ -1,7 +1,6 @@
-package eugeen3.keepinfit.itemtouch;
+package eugeen3.keepinfit.itemtouch
 
-public interface ItemTouchHelperAdapter {
-    boolean onItemMove(int fromPosition, int toPosition);
-
-    void onItemDismiss(int position);
+interface ItemTouchHelperAdapter {
+    fun onItemMove(fromPosition: Int, toPosition: Int): Boolean
+    fun onItemDismiss(position: Int)
 }
