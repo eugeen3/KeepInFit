@@ -45,18 +45,21 @@
         <item>Не изменять вес</item>
     </string-array>
 
+    <string name="text_view_default_text">TextView</string>
+
     <string name="daily_stats">Статистика за день</string>
     <string name="proteins">Белки</string>
     <string name="fats">Жиры</string>
     <string name="carbohydrates">Углеводы</string>
-    <string name="kcals">Килокалории</string>
+    <string name="kilocalories">Килокалории</string>
     <string name="title">Название</string>
 
-    <string name="prot">Б</string>
-    <string name="fat">Ж</string>
-    <string name="carb">У</string>
-    <string name="kcal">Ккал</string>
+    <string name="proteins_reduced">Б</string>
+    <string name="fats_reduced">Ж</string>
+    <string name="carbohydrates_reduced">У</string>
+    <string name="kilocalories_reduced">Ккал</string>
     <string name="portion_weight">в 100 гр:</string>
+
     <string name="hint_grams">грамм</string>
     <string name="hint_search_food">Введите название продукта</string>
     <string name="hint_input_mass">Введите массу продукта</string>

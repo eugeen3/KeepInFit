@@ -14,7 +14,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:listitem="@layout/food_item" />
+        tools:listitem="@layout/base_item" />
 
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -24,8 +24,8 @@
         android:layout_marginBottom="16dp"
         android:clickable="true"
         android:focusable="true"
-        android:tint="#0F27E4"
-        app:backgroundTint="#FFA000"
+        android:tint="@color/colorNavigationView"
+        app:backgroundTint="@color/colorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

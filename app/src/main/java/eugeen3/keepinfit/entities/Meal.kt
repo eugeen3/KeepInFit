@@ -4,9 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity
-class Meal {
-    @PrimaryKey
+class Meal(val name: String, val foodItems: List<FoodItem>? = null) {
+    @PrimaryKey(autoGenerate = true)
     private val id: Long = 0
-    private val name: String? = null
-    private val foodItems: List<FoodItem>? = null
 }

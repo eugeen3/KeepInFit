@@ -8,7 +8,6 @@ import android.widget.Filterable;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -37,7 +36,7 @@ public class FoodItemAdapter extends RecyclerView.Adapter<FoodItemAdapter.ViewHo
     @NonNull
     public FoodItemAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.food_item, parent, false);
+                .inflate(R.layout.base_item, parent, false);
         return new ViewHolder(view);
     }
 
@@ -49,7 +48,7 @@ public class FoodItemAdapter extends RecyclerView.Adapter<FoodItemAdapter.ViewHo
         holder.proteinsView.setText(valueOf(currentFoodItem.getProteins()));
         holder.carbohydratesView.setText(valueOf(currentFoodItem.getCarbohydrates()));
         holder.fatsView.setText(valueOf(currentFoodItem.getFats()));
-        holder.kcalsView.setText(valueOf(currentFoodItem.getKcals()));
+        holder.kcalsView.setText(valueOf(currentFoodItem.getKilocalories()));
     }
 
     @Override
@@ -75,12 +74,12 @@ public class FoodItemAdapter extends RecyclerView.Adapter<FoodItemAdapter.ViewHo
         private final TextView nameView, massView, proteinsView, carbohydratesView, fatsView, kcalsView;
         ViewHolder(View view){
             super(view);
-            nameView = view.findViewById(R.id.foodName);
-            massView = view.findViewById(R.id.foodMass);
-            proteinsView = view.findViewById(R.id.foodProtValue);
-            carbohydratesView = view.findViewById(R.id.foodCarbValue);
-            fatsView = view.findViewById(R.id.foodFatValue);
-            kcalsView = view.findViewById(R.id.foodKcalValue);
+            nameView = view.findViewById(R.id.cardTitle);
+            massView = view.findViewById(R.id.cardSubtitle);
+            proteinsView = view.findViewById(R.id.cardProteinsValue);
+            carbohydratesView = view.findViewById(R.id.cardCarbohydratesValue);
+            fatsView = view.findViewById(R.id.cardFatsValue);
+            kcalsView = view.findViewById(R.id.cardKilocaloriesValue);
         }
     }
 
@@ -122,9 +121,9 @@ public class FoodItemAdapter extends RecyclerView.Adapter<FoodItemAdapter.ViewHo
 
     @Override
     public void onItemDismiss(int position) {
+        foodItemViewModel.delete(foodItems.get(position));
         foodItems.remove(position);
         notifyItemRemoved(position);
-        foodItemViewModel.delete(foodItems.get(position));
     }
 
     @Override

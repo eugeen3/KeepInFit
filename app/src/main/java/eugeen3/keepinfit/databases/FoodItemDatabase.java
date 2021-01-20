@@ -12,7 +12,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 import eugeen3.keepinfit.dao.FoodItemDAO;
 import eugeen3.keepinfit.entities.FoodItem;
 
-@Database(entities = FoodItem.class, version = 1, exportSchema = false)
+@Database(entities = FoodItem.class, version = 2, exportSchema = false)
 public abstract class FoodItemDatabase extends RoomDatabase {
 
     private static FoodItemDatabase instance;

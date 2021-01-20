@@ -4,4 +4,5 @@
     <color name="colorPrimaryDark">#CCCCC5</color>
     <color name="colorAccent">#D81B60</color>
     <color name="colorNavigationView">#33CC99</color>
+    <color name="colorWhite">#FFFFFF</color>
 </resources>
