@@ -74,12 +74,12 @@ public class FoodItemAdapter extends RecyclerView.Adapter<FoodItemAdapter.ViewHo
         private final TextView nameView, massView, proteinsView, carbohydratesView, fatsView, kcalsView;
         ViewHolder(View view){
             super(view);
-            nameView = view.findViewById(R.id.cardTitle);
-            massView = view.findViewById(R.id.cardSubtitle);
-            proteinsView = view.findViewById(R.id.cardProteinsValue);
-            carbohydratesView = view.findViewById(R.id.cardCarbohydratesValue);
-            fatsView = view.findViewById(R.id.cardFatsValue);
-            kcalsView = view.findViewById(R.id.cardKilocaloriesValue);
+            nameView = view.findViewById(R.id.tvCardTitle);
+            massView = view.findViewById(R.id.tvCardSubtitle);
+            proteinsView = view.findViewById(R.id.tvProteinsValue);
+            carbohydratesView = view.findViewById(R.id.tvCarbohydratesValue);
+            fatsView = view.findViewById(R.id.tvFatsValue);
+            kcalsView = view.findViewById(R.id.tvKilocaloriesValue);
         }
     }
 

@@ -7,8 +7,9 @@ import androidx.lifecycle.LiveData
 import eugeen3.keepinfit.entities.FoodItem
 
 class FoodItemViewModel(application: Application) : AndroidViewModel(application) {
-    private val repository: FoodItemRepository
+    val repository: FoodItemRepository = FoodItemRepository(application)
     val allFoodItems: LiveData<List<FoodItem>>
+
     fun insert(foodItem: FoodItem?) {
         repository.insert(foodItem)
     }
@@ -26,7 +27,6 @@ class FoodItemViewModel(application: Application) : AndroidViewModel(application
     }
 
     init {
-        repository = FoodItemRepository(application)
-        allFoodItems = repository.allFoodItems
+        allFoodItems = repository.allFoodItems!!
     }
 }
