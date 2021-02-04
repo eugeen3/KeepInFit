@@ -6,7 +6,7 @@ import eugeen3.keepinfit.repositories.FoodItemRepository
 import androidx.lifecycle.LiveData
 import eugeen3.keepinfit.entities.FoodItem
 
-class FoodItemViewModel(application: Application) : AndroidViewModel(application) {
+class SharedViewModel(application: Application) : AndroidViewModel(application) {
     val repository: FoodItemRepository = FoodItemRepository(application)
     val allFoodItems: LiveData<List<FoodItem>>
 
