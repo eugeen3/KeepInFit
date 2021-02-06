@@ -79,5 +79,6 @@
     <string name="toast_product_added">Продукт добавлен</string>
     <string name="toast_product_not_added">Продукт не добавлен</string>
     <string name="toast_all_product_deleted">Все продукты удалены</string>
+    <string name="FoodItemFragmentTitle">Добавьте новый продукт</string>
 
 </resources>

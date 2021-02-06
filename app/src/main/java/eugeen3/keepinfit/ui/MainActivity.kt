@@ -15,7 +15,7 @@ class MainActivity : AppCompatActivity(), MenuItem.OnActionExpandListener {
         mBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(mBinding.root)
         supportFragmentManager.beginTransaction()
-                .add(R.id.vFragmentContainer, FoodItemsFragment())
+                .add(R.id.vFragmentContainer, FoodItemsListFragment())
                 .commit()
 
     }

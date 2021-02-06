@@ -1,6 +1,5 @@
 package eugeen3.keepinfit.ui
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -12,20 +11,20 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import eugeen3.keepinfit.R
 import eugeen3.keepinfit.adapters.FoodItemAdapter
-import eugeen3.keepinfit.databinding.FragmentFoodItemsBinding
+import eugeen3.keepinfit.databinding.FragmentFoodItemsListBinding
 import eugeen3.keepinfit.entities.FoodItem
 import eugeen3.keepinfit.itemtouch.SimpleItemTouchHelperCallback
 import eugeen3.keepinfit.viewmodels.SharedViewModel
 
-class FoodItemsFragment : BaseFragment(R.layout.fragment_food_items) {
+class FoodItemsListFragment : BaseFragment(R.layout.fragment_food_items_list) {
 
-    private var mBinding: FragmentFoodItemsBinding? = null
+    private var mBinding: FragmentFoodItemsListBinding? = null
     private lateinit var mSharedViewModel: SharedViewModel
     private lateinit var mAdapter: FoodItemAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val binding = FragmentFoodItemsBinding.bind(view)
+        val binding = FragmentFoodItemsListBinding.bind(view)
         mBinding = binding
     }
 
@@ -58,8 +57,13 @@ class FoodItemsFragment : BaseFragment(R.layout.fragment_food_items) {
 
     private fun createButton() {
         mBinding?.btnAddFoodItem?.setOnClickListener {
-            val intent = Intent(activity, AddFoodItemToDB::class.java)
-            startActivityForResult(intent, MainActivity.ADD_FOOD_ITEM_REQUEST)
+//            val intent = Intent(activity, AddFoodItemToDB::class.java)
+//            startActivityForResult(intent, MainActivity.ADD_FOOD_ITEM_REQUEST)
+            this.fragmentManager
+                    ?.beginTransaction()
+                    ?.addToBackStack(null)
+                    ?.replace(R.id.vFragmentContainer, FoodItemFragment())
+                    ?.commit()
         }
     }
 

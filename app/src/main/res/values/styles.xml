@@ -24,4 +24,18 @@
         <item name="android:padding">8dp</item>
     </style>
 
+    <style name="foodItemEditText">
+        <item name="android:layout_width">80dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:inputType">number</item>
+        <item name="android:layout_marginEnd">32dp</item>
+    </style>
+
+    <style name="textViewLarge">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">32dp</item>
+        <item name="android:textAppearance">@android:style/TextAppearance.Large</item>
+    </style>
+
 </resources>
