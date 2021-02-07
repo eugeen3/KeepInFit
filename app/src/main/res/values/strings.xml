@@ -80,5 +80,10 @@
     <string name="toast_product_not_added">Продукт не добавлен</string>
     <string name="toast_all_product_deleted">Все продукты удалены</string>
     <string name="FoodItemFragmentTitle">Добавьте новый продукт</string>
+    <string name="etEmptyNumberError">Введите число</string>
+    <string name="etInputNumberWrongValueError">Значение должно быть меньше 100</string>
+    <string name="toastCheckIfDataCorrect">Проверьте правильность введённых данных</string>
+    <string name="etInputNumberWrongValueKilocaloriesError">Значение должно быть меньше 1000</string>
+    <string name="etEmptyTitleError">Введите название</string>
 
 </resources>
