@@ -57,8 +57,6 @@ class FoodItemsListFragment : BaseFragment(R.layout.fragment_food_items_list) {
 
     private fun createButton() {
         mBinding?.btnAddFoodItem?.setOnClickListener {
-//            val intent = Intent(activity, AddFoodItemToDB::class.java)
-//            startActivityForResult(intent, MainActivity.ADD_FOOD_ITEM_REQUEST)
             this.fragmentManager
                     ?.beginTransaction()
                     ?.addToBackStack(null)

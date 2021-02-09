@@ -5,11 +5,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import eugeen3.keepinfit.R
+import eugeen3.keepinfit.databinding.BaseItemBinding
+import eugeen3.keepinfit.databinding.FragmentFoodItemsListBinding
 import eugeen3.keepinfit.entities.FoodItem
 import eugeen3.keepinfit.itemtouch.ItemTouchHelperAdapter
+import eugeen3.keepinfit.ui.FoodItemFragment
 import eugeen3.keepinfit.viewmodels.SharedViewModel
 import java.util.*
 
@@ -19,8 +23,8 @@ class FoodItemAdapter : RecyclerView.Adapter<FoodItemAdapter.ViewHolder>(), Filt
     private var foodItemsFull: MutableList<FoodItem>? = null
     private var sharedViewModel: SharedViewModel? = null
 
-    fun setSharedViewModel(sharedViewModel: SharedViewModel?) {
-        this.sharedViewModel = sharedViewModel
+    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val binding = BaseItemBinding.bind(view)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -30,17 +34,26 @@ class FoodItemAdapter : RecyclerView.Adapter<FoodItemAdapter.ViewHolder>(), Filt
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val currentFoodItem = foodItems!![position]
-        holder.nameView.text = currentFoodItem.name
-        holder.massView.text = PORTION_WEIGHT
-        holder.proteinsView.text = currentFoodItem.proteins.toString()
-        holder.carbohydratesView.text = currentFoodItem.carbohydrates.toString()
-        holder.fatsView.text = currentFoodItem.fats.toString()
-        holder.kcalsView.text = currentFoodItem.kilocalories.toString()
+        holder.binding.apply {
+            tvCardTitle.text = foodItems!![position].name
+            tvCardSubtitle.text = PORTION_WEIGHT
+            tvProteinsValue.text = foodItems!![position].proteins.toString()
+            tvFatsValue.text = foodItems!![position].fats.toString()
+            tvCarbohydratesValue.text = foodItems!![position].carbohydrates.toString()
+            tvKilocaloriesValue.text = foodItems!![position].kilocalories.toString()
+            ibEdit.setOnClickListener {
+                sharedViewModel?.setFoodItem(foodItems!![position])
+                TODO("open fooditemfragment")
+            }
+        }
     }
 
     override fun getItemCount(): Int {
-        return if (foodItems == null) 0 else foodItems!!.size
+        return foodItems?.size ?: 0
+    }
+
+    fun setSharedViewModel(sharedViewModel: SharedViewModel?) {
+        this.sharedViewModel = sharedViewModel
     }
 
     fun setFoodItems(foodItems: List<FoodItem?>?) {
@@ -57,30 +70,13 @@ class FoodItemAdapter : RecyclerView.Adapter<FoodItemAdapter.ViewHolder>(), Filt
         return foodItems!![position]
     }
 
-    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val nameView: TextView
-        val massView: TextView
-        val proteinsView: TextView
-        val carbohydratesView: TextView
-        val fatsView: TextView
-        val kcalsView: TextView
-
-        init {
-            nameView = view.findViewById(R.id.tvCardTitle)
-            massView = view.findViewById(R.id.tvCardSubtitle)
-            proteinsView = view.findViewById(R.id.tvProteinsValue)
-            carbohydratesView = view.findViewById(R.id.tvCarbohydratesValue)
-            fatsView = view.findViewById(R.id.tvFatsValue)
-            kcalsView = view.findViewById(R.id.tvKilocaloriesValue)
-        }
-    }
-
     override fun getFilter(): Filter {
         return filter
     }
 
     private val filter: Filter = object : Filter() {
         override fun performFiltering(constraint: CharSequence): FilterResults {
+            //TODO fix filters
 //            val filteredList: MutableList<FoodItem> = ArrayList()
 //            if (constraint.isEmpty()) {
 //                filteredList.addAll(foodItemsFull as Array<FoodItem>)

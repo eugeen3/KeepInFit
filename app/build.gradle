@@ -21,6 +21,7 @@ android {
     }
     buildFeatures {
         viewBinding true
+        dataBinding true
     }
     compileOptions {
         targetCompatibility = 1.8

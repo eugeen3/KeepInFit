@@ -20,6 +20,8 @@ class FoodItemFragment : BaseFragment(R.layout.fragment_food_item) {
     private var mBinding: FragmentFoodItemBinding? = null
     private lateinit var sharedViewModel: SharedViewModel
 
+    //TODO close button and title
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentFoodItemBinding.bind(view)
