@@ -2,45 +2,64 @@ package eugeen3.keepinfit.ui
 
 import android.app.ActionBar
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.view.View
+import android.view.*
 import android.widget.Toast
-import androidx.lifecycle.ViewModelProviders
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import eugeen3.keepinfit.R
 import eugeen3.keepinfit.databinding.FragmentFoodItemBinding
 import eugeen3.keepinfit.entities.FoodItem
+import eugeen3.keepinfit.utils.replaceFragment
+import eugeen3.keepinfit.utils.showToast
 import eugeen3.keepinfit.viewmodels.SharedViewModel
 import java.lang.Float.parseFloat
 import java.lang.Integer.parseInt
 
-
-class FoodItemFragment : BaseFragment(R.layout.fragment_food_item) {
+class FoodItemFragment(
+        private val isOpenedToEdit: Boolean = false
+) : Fragment(R.layout.fragment_food_item) {
     private var mBinding: FragmentFoodItemBinding? = null
+    private val binding get() = mBinding!!
+    private lateinit var oldFoodItem: FoodItem
     private lateinit var sharedViewModel: SharedViewModel
 
     //TODO close button and title
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        val binding = FragmentFoodItemBinding.bind(view)
-        mBinding = binding
+    override fun onCreateView(
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
+    ): View {
+        mBinding = FragmentFoodItemBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
         setHasOptionsMenu(true)
+
+        sharedViewModel = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
+        sharedViewModel.foodItemPosition?.let { position ->
+            sharedViewModel.allFoodItems.value?.get(position)?.let { foodItem ->
+                oldFoodItem = foodItem
+                setFoodItemValues(foodItem)
+            }
+        }
+
         val actionBar: ActionBar? = activity?.actionBar
         actionBar?.setDisplayHomeAsUpEnabled(true)
         actionBar?.setHomeAsUpIndicator(R.drawable.ic_close)
         actionBar?.title = getString(R.string.FoodItemFragmentTitle)
     }
 
-    override fun onDestroyView() {
-        mBinding = null
-        super.onDestroyView()
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        sharedViewModel = ViewModelProviders.of(this).get(SharedViewModel::class.java)
+    private fun setFoodItemValues(foodItem: FoodItem) {
+        binding.apply {
+            etFoodItemTitle.setText(foodItem.name)
+            etFoodItemProteins.setText(foodItem.proteins.toString())
+            etFoodItemFats.setText(foodItem.fats.toString())
+            etFoodItemCarbohydrates.setText(foodItem.carbohydrates.toString())
+            etFoodItemKilocalories.setText(foodItem.kilocalories.toString())
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -52,11 +71,14 @@ class FoodItemFragment : BaseFragment(R.layout.fragment_food_item) {
             R.id.save_food_item_in_db -> {
                 val newFoodItem: FoodItem? = createFoodItem()
                 if (newFoodItem != null) {
-                    sharedViewModel.insert(newFoodItem)
-                    fragmentManager
-                            ?.beginTransaction()
-                            ?.replace(R.id.vFragmentContainer, FoodItemsListFragment())
-                            ?.commit()
+                    if (isOpenedToEdit) {
+                        sharedViewModel.delete(oldFoodItem)
+                        sharedViewModel.insert(newFoodItem)
+                    } else {
+                        sharedViewModel.insert(newFoodItem)
+                    }
+                    showToast(getString(R.string.toast_data_updated))
+                    replaceFragment(FoodItemsListFragment())
                 }
             }
         }
@@ -66,11 +88,11 @@ class FoodItemFragment : BaseFragment(R.layout.fragment_food_item) {
     private fun createFoodItem(): FoodItem? {
         return if (validateAll())
             FoodItem(
-                    mBinding?.etFoodItemTitle?.text.toString(),
-                    parseFloat(mBinding?.etFoodItemProteins?.text.toString()),
-                    parseFloat(mBinding?.etFoodItemFats?.text.toString()),
-                    parseFloat(mBinding?.etFoodItemCarbohydrates?.text.toString()),
-                    parseInt(mBinding?.etFoodItemKilocalories?.text.toString())
+                    binding.etFoodItemTitle.text.toString(),
+                    parseFloat(binding.etFoodItemProteins.text.toString()),
+                    parseFloat(binding.etFoodItemFats.text.toString()),
+                    parseFloat(binding.etFoodItemCarbohydrates.text.toString()),
+                    parseInt(binding.etFoodItemKilocalories.text.toString())
             )
         else {
             null
@@ -83,9 +105,9 @@ class FoodItemFragment : BaseFragment(R.layout.fragment_food_item) {
                 validateFats() &&
                 validateCarbohydrates() &&
                 validateKilocalories()) {
-            if (parseFloat(mBinding?.etFoodItemProteins?.text.toString()) +
-                    parseFloat(mBinding?.etFoodItemFats?.text.toString()) +
-                    parseFloat(mBinding?.etFoodItemCarbohydrates?.text.toString()) > 100) {
+            if (parseFloat(binding.etFoodItemProteins.text.toString()) +
+                    parseFloat(binding.etFoodItemFats.text.toString()) +
+                    parseFloat(binding.etFoodItemCarbohydrates.text.toString()) > 100) {
                 Toast.makeText(activity,
                         getString(R.string.toastCheckIfDataCorrect), Toast.LENGTH_SHORT).show()
                 false
@@ -97,8 +119,8 @@ class FoodItemFragment : BaseFragment(R.layout.fragment_food_item) {
 
     private fun validateTitle(): Boolean {
         return when {
-            mBinding?.etFoodItemTitle?.text?.isEmpty() == true -> {
-                mBinding?.etFoodItemTitle?.error =
+            binding.etFoodItemTitle.text?.isBlank() == true -> {
+                binding.etFoodItemTitle.error =
                         getString(R.string.etEmptyTitleError)
                 false
             }
@@ -108,18 +130,18 @@ class FoodItemFragment : BaseFragment(R.layout.fragment_food_item) {
 
     private fun validateProteins(): Boolean {
         return when {
-            mBinding?.etFoodItemProteins?.text?.isEmpty() == true -> {
-                mBinding?.etFoodItemProteins?.error =
+            binding.etFoodItemProteins.text?.isEmpty() == true -> {
+                binding.etFoodItemProteins.error =
                         getString(R.string.etEmptyNumberError)
                 false
             }
-            parseFloat(mBinding?.etFoodItemProteins?.text.toString()) > 100 -> {
-                mBinding?.etFoodItemProteins?.error =
+            parseFloat(binding.etFoodItemProteins.text.toString()) > 100 -> {
+                binding.etFoodItemProteins.error =
                         getString(R.string.etInputNumberWrongValueError)
                 false
             }
             else -> {
-                mBinding?.etFoodItemProteins?.error = null
+                binding.etFoodItemProteins.error = null
                 true
             }
         }
@@ -127,18 +149,18 @@ class FoodItemFragment : BaseFragment(R.layout.fragment_food_item) {
 
     private fun validateFats(): Boolean {
         return when {
-            mBinding?.etFoodItemFats?.text?.isEmpty() == true -> {
-                mBinding?.etFoodItemFats?.error =
+            binding.etFoodItemFats.text?.isEmpty() == true -> {
+                binding.etFoodItemFats.error =
                         getString(R.string.etEmptyNumberError)
                 false
             }
-            parseFloat(mBinding?.etFoodItemFats?.text.toString()) > 100 -> {
-                mBinding?.etFoodItemFats?.error =
+            parseFloat(binding.etFoodItemFats.text.toString()) > 100 -> {
+                binding.etFoodItemFats.error =
                         getString(R.string.etInputNumberWrongValueError)
                 false
             }
             else -> {
-                mBinding?.etFoodItemFats?.error = null
+                binding.etFoodItemFats.error = null
                 true
             }
         }
@@ -146,18 +168,18 @@ class FoodItemFragment : BaseFragment(R.layout.fragment_food_item) {
 
     private fun validateCarbohydrates(): Boolean {
         return when {
-            mBinding?.etFoodItemCarbohydrates?.text?.isEmpty() == true -> {
-                mBinding?.etFoodItemCarbohydrates?.error =
+            binding.etFoodItemCarbohydrates.text?.isEmpty() == true -> {
+                binding.etFoodItemCarbohydrates.error =
                         getString(R.string.etEmptyNumberError)
                 false
             }
-            parseFloat(mBinding?.etFoodItemCarbohydrates?.text.toString()) > 100 -> {
-                mBinding?.etFoodItemCarbohydrates?.error =
+            parseFloat(binding.etFoodItemCarbohydrates.text.toString()) > 100 -> {
+                binding.etFoodItemCarbohydrates.error =
                         getString(R.string.etInputNumberWrongValueError)
                 false
             }
             else -> {
-                mBinding?.etFoodItemCarbohydrates?.error = null
+                binding.etFoodItemCarbohydrates.error = null
                 true
             }
         }
@@ -165,20 +187,25 @@ class FoodItemFragment : BaseFragment(R.layout.fragment_food_item) {
 
     private fun validateKilocalories(): Boolean {
         return when {
-            mBinding?.etFoodItemKilocalories?.text?.isEmpty() == true -> {
-                mBinding?.etFoodItemKilocalories?.error =
+            binding.etFoodItemKilocalories.text?.isEmpty() == true -> {
+                binding.etFoodItemKilocalories.error =
                         getString(R.string.etEmptyNumberError)
                 false
             }
-            parseInt(mBinding?.etFoodItemKilocalories?.text.toString()) >= 1000 -> {
-                mBinding?.etFoodItemKilocalories?.error =
+            parseInt(binding.etFoodItemKilocalories.text.toString()) >= 1000 -> {
+                binding.etFoodItemKilocalories.error =
                         getString(R.string.etInputNumberWrongValueKilocaloriesError)
                 false
             }
             else -> {
-                mBinding?.etFoodItemKilocalories?.error = null
+                binding.etFoodItemKilocalories.error = null
                 true
             }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        mBinding = null
     }
 }

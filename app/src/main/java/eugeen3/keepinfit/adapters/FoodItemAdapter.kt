@@ -1,19 +1,18 @@
 package eugeen3.keepinfit.adapters
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
-import android.widget.ImageButton
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import eugeen3.keepinfit.R
 import eugeen3.keepinfit.databinding.BaseItemBinding
-import eugeen3.keepinfit.databinding.FragmentFoodItemsListBinding
 import eugeen3.keepinfit.entities.FoodItem
 import eugeen3.keepinfit.itemtouch.ItemTouchHelperAdapter
 import eugeen3.keepinfit.ui.FoodItemFragment
+import eugeen3.keepinfit.utils.replaceFragment
 import eugeen3.keepinfit.viewmodels.SharedViewModel
 import java.util.*
 
@@ -42,8 +41,8 @@ class FoodItemAdapter : RecyclerView.Adapter<FoodItemAdapter.ViewHolder>(), Filt
             tvCarbohydratesValue.text = foodItems!![position].carbohydrates.toString()
             tvKilocaloriesValue.text = foodItems!![position].kilocalories.toString()
             ibEdit.setOnClickListener {
-                sharedViewModel?.setFoodItem(foodItems!![position])
-                TODO("open fooditemfragment")
+                sharedViewModel?.foodItemPosition = position
+                replaceFragment(FoodItemFragment(true))
             }
         }
     }
@@ -66,7 +65,7 @@ class FoodItemAdapter : RecyclerView.Adapter<FoodItemAdapter.ViewHolder>(), Filt
         notifyDataSetChanged()
     }
 
-    fun getFoodItemAt(position: Int): FoodItem? {
+    fun getFoodItemAt(position: Int): FoodItem {
         return foodItems!![position]
     }
 

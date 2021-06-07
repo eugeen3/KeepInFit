@@ -5,6 +5,7 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import eugeen3.keepinfit.R
 import eugeen3.keepinfit.databinding.ActivityMainBinding
+import eugeen3.keepinfit.utils.ACTIVITY
 
 class MainActivity : AppCompatActivity(), MenuItem.OnActionExpandListener {
 
@@ -13,6 +14,7 @@ class MainActivity : AppCompatActivity(), MenuItem.OnActionExpandListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mBinding = ActivityMainBinding.inflate(layoutInflater)
+        ACTIVITY = this
         setContentView(mBinding.root)
         supportFragmentManager.beginTransaction()
                 .add(R.id.vFragmentContainer, FoodItemsListFragment())

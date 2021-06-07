@@ -4,7 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "foodItems_table")
-class FoodItem(
+data class FoodItem(
         val name: String,
         val proteins: Float,
         val fats: Float,

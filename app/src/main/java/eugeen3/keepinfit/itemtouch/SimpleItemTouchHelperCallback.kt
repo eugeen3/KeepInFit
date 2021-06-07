@@ -20,11 +20,11 @@ class SimpleItemTouchHelperCallback(private val mAdapter: ItemTouchHelperAdapter
 
     override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder,
                         target: RecyclerView.ViewHolder): Boolean {
-        mAdapter.onItemMove(viewHolder.adapterPosition, target.adapterPosition)
+        mAdapter.onItemMove(viewHolder.bindingAdapterPosition, target.bindingAdapterPosition)
         return true
     }
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-        mAdapter.onItemDismiss(viewHolder.adapterPosition)
+        mAdapter.onItemDismiss(viewHolder.bindingAdapterPosition)
     }
 }

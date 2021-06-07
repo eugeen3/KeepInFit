@@ -85,5 +85,6 @@
     <string name="toastCheckIfDataCorrect">Проверьте правильность введённых данных</string>
     <string name="etInputNumberWrongValueKilocaloriesError">Значение должно быть меньше 1000</string>
     <string name="etEmptyTitleError">Введите название</string>
+    <string name="toast_data_updated">Данные обновлены</string>
 
 </resources>

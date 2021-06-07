@@ -1,6 +1,5 @@
 package eugeen3.keepinfit.dao
 
-import eugeen3.keepinfit.entities.FoodItem
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import eugeen3.keepinfit.entities.Meal

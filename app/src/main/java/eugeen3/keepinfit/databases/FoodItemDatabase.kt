@@ -9,7 +9,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import eugeen3.keepinfit.dao.FoodItemDAO
 import eugeen3.keepinfit.entities.FoodItem
 
-@Database(entities = [FoodItem::class], version = 2, exportSchema = false)
+@Database(entities = [FoodItem::class], version = 3, exportSchema = false)
 abstract class FoodItemDatabase : RoomDatabase() {
 
     abstract fun foodItemDAO(): FoodItemDAO
@@ -40,7 +40,7 @@ abstract class FoodItemDatabase : RoomDatabase() {
     }
 
     private class PopulateDBAsyncTask constructor(database: FoodItemDatabase?) : AsyncTask<Void?, Void?, Void?>() {
-        private val foodItemDAO: FoodItemDAO
+        private val foodItemDAO: FoodItemDAO = database!!.foodItemDAO()
         override fun doInBackground(vararg voids: Void?): Void? {
             foodItemDAO.insert(FoodItem("Яйцо", 12.7f, 0.7f, 11.5f, 157))
             foodItemDAO.insert(FoodItem("Банан", 1.5f, 21f, 0.5f, 96))
@@ -49,8 +49,5 @@ abstract class FoodItemDatabase : RoomDatabase() {
             return null
         }
 
-        init {
-            foodItemDAO = database!!.foodItemDAO()
-        }
     }
 }
